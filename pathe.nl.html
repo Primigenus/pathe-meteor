@@ -1,0 +1,106 @@
+<head>
+  <title>Bioscoopagenda Amsterdam</title>
+</head>
+
+<body>
+  {{> page}}
+</body>
+
+<template name="page">
+  <section id="main">
+    <header>
+      <img src="http://www.pathe.nl/themes/main_theme/gfx/logo.png" alt="pathe"/>
+      <div id="login">{{loginButtons}}</div>
+    </header>
+    <h1>Bioscoopagenda Amsterdam</h1>
+    {{> movies}}
+  </section>
+  {{#if bookingMovie}}
+    <section id="booking">
+      {{> booking}}
+    </section>
+  {{/if}}
+</template>
+
+<template name="movies">
+  {{#each movie}}
+    <div class="movie">
+      <img src="{{image}}" alt=""/>
+      <h2>{{title}} {{#if 3d}}<span class="is3d">3D</span>{{/if}}</h2>
+      <p class="desc">{{description}}</p>
+      <p class="footnote">
+        {{#if imax}}pathé imax | {{/if}}
+        {{#if 3d}}3d bioscoop | {{/if}}
+        {{lang}}
+        {{rating}}
+        {{#if digital}} | digitaal{{/if}}
+      </p>
+      {{> times}}
+    </div>
+  {{/each}}
+</template>
+
+<template name="times">
+  <table class="times" cellpadding="0" cellspacing="0">
+    {{#each showingAt}}
+      <tr>
+        <th>Pathé {{theatre}}</th>
+        <td>
+          {{#each times}}
+            <div class="book-time {{#if imax}}imax{{/if}}" data-theatre="{{../theatre}}">
+              {{time}}
+              {{#if imax}}imax{{/if}}
+              {{#if 3d}}<span class="is3d">3D</span>{{/if}}
+            </div>
+          {{/each}}
+        </td>
+    {{/each}}
+  </table>
+</template>
+
+<template name="nowshowing">
+  <ul>
+    {{#each movie}}
+    <li>{{time}}: {{title}} ({{remainingSeats}})</li>
+    {{/each}}
+  </ul>
+</template>
+
+<template name="booking">
+  {{#with bookingMovie}}
+  <div class="loading"></div>
+  <div class="booking">
+    <div class="overview">
+      <img src="{{movie.image}}" alt="" />
+      <ul>
+        <li><h2>{{movie.title}}</h2></li>
+        <li>Vandaag om {{time}}<br/>in Pathé {{theatre}}</li>
+        <li>
+          {{getRating movie.rating}}
+        </li>
+      </ul>
+    </div>
+    <div class="form" id="choose-seats">
+      <h3>Kies je stoel(en) uit</h3>
+      <div id="seats-grid">
+        {{> seats}}
+      </div>
+    </div>
+    <div class="total">
+      Totaal: EUR {{price}}
+      <br/>
+      {{numTickets}} tickets
+      <button id="book">Boeken!</button>
+      <button id="cancel">Annuleren</button>
+    </div>
+  </div>
+  {{/with}}
+</template>
+
+<template name="seats">
+  {{#each seat}}
+    <div class="seat {{status}}" data-id="{{_id}}"></div>
+  {{else}}
+    <div class="loading">Loading...</div>
+  {{/each}}
+</template>

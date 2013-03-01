@@ -1,0 +1,202 @@
+html {
+  background: black -webkit-linear-gradient(top, #000, #555);
+  min-height: 100%;
+}
+
+body {
+  position: relative;
+  width: 960px;
+  margin: 100px auto;
+  font-family: Arial, Helvetica, sans-serif;
+  line-height: 1.4;
+}
+
+#main {
+  float: left;
+  width: 420px;
+  background: white;
+  padding: 20px 20px 0 20px;
+  box-shadow: inset 0 5px 15px rgba(0,0,0,.3);
+}
+
+header {
+  margin-top: -100px;
+  margin-bottom: 20px;
+}
+
+#login {
+  position: absolute;
+  top: -60px; right: 0;
+}
+
+.movie {
+  padding: 20px 20px 0 20px;
+  margin: 0 -20px;
+  border-bottom: solid 2px #999;
+}
+.movie:nth-child(odd) {
+  background-color: #eee;
+}
+
+.movie h2 {
+  font-size: 14px;
+  margin: 0;
+}
+
+.movie img {
+  float: left;
+  margin: 0 10px 10px 0;
+}
+
+.desc {
+  font-size: 12px;
+}
+
+.footnote {
+  font-weight: bold;
+  font-size: 12px;
+}
+
+.is3d {
+  text-transform: uppercase;
+  color: #39c;
+  font-weight: bold;
+}
+
+.times {
+  clear: left;
+  width: 460px;
+  font-size: 11px;
+  border-left: none; border-right: none;
+  margin: 0 -20px;
+}
+
+.times th {
+  width: 100px;
+  text-align: left;
+}
+
+.times td, .times th {
+  vertical-align: middle;
+  padding: 0 10px 4px 20px;
+  border-top: solid 1px #fff;
+  border-bottom: solid 1px #ccc;
+  background: -webkit-linear-gradient(top, #eee, #fff);
+}
+
+.book-time {
+  display: inline-block;
+  border-radius: 10px;
+  background: -webkit-linear-gradient(top, #e6e6e6, #bbb);
+  padding: 4px 5px;
+  cursor: pointer;
+  margin-top: 4px;
+}
+
+.imax {
+  color: white;
+  font-weight: bold;
+  text-transform: uppercase;
+  background: -webkit-linear-gradient(top, #69c, #369);
+}
+.imax .is3d { color: white; }
+
+.book-time:hover {
+  background-color: black;
+  background-image: none;
+  color: white;
+}
+
+#booking {
+  width: 450px;
+  float: right;
+  position: relative;
+}
+#booking .loading {
+  pointer-events: none;
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(255,255,255,.7) url(/loading.gif) center center no-repeat;
+  z-index: 8;
+  -webkit-transition: linear .2s;
+  opacity: 0;
+}
+#booking.loading .loading {
+  opacity: 1;
+}
+.booking {
+  margin: 0 auto;
+  background: white -webkit-linear-gradient(top, #eee, #fff);
+  padding: 20px;
+}
+
+.overview {
+  background: black;
+  box-shadow: 0 0 4px rgba(0,0,0,.4);
+  border-radius: 5px;
+  color: white;
+  padding: 10px;
+}
+.overview:after {
+  content: "";
+  display: block;
+  clear: both;
+}
+.overview h2 {
+  font-size: 18px;
+  margin: 0;
+}
+.overview ul {
+  list-style: none;
+  margin: 0; padding: 0;
+}
+.overview li {
+  padding: 5px 0;
+}
+.overview img {
+  float: left;
+  margin: 0 20px 0 0;
+  zoom: 1.6;
+}
+
+.total {
+  background-color: black;
+  color: white;
+  padding: 20px;
+  margin: -20px;
+}
+.total button {
+  float: right;
+  font-size: 20px;
+  margin-top: -14px;
+  cursor: pointer;
+  border-radius: 10px;
+  border: none;
+  background: white -webkit-linear-gradient(top, #eee, #fff);
+  padding: 4px 10px;
+  font-family: Arial, Helvetica, sans-serif;
+}
+#cancel {
+  color: #999;
+  background: transparent;
+  font-size: 16px;
+  margin-top: -12px;
+}
+
+#seats-grid {
+  width: 400px; height: 500px;
+}
+
+.seat {
+  cursor: pointer;
+  width: 20px; height: 20px;
+  float: left;
+  background: url(/grid.png) 0 -122px no-repeat;
+}
+.seat:hover {
+  opacity: .8;
+}
+.seat.mine { background: url(/seat-red.png) top left no-repeat;}
+.seat.active { background: url(/seat-blue.png) top left no-repeat;}
+.seat.taken { background: url(/seat-gray.png) top left no-repeat;}
+.seat.unavailable { background: url(/seat-black.png) top left no-repeat;}
