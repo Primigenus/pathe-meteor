@@ -27,7 +27,8 @@ if (Meteor.isClient) {
 
   Template.times.events({
     'click .book-time': function(evt, data) {
-      Seats.update({active: Meteor.userId()}, {$set: {active: false}}, {multi: true});
+      if (Meteor.userId())
+        Seats.update({active: Meteor.userId()}, {$set: {active: false}}, {multi: true});
 
       $("#booking").addClass("loading");
       var self = this;
@@ -44,6 +45,11 @@ if (Meteor.isClient) {
   Template.booking.events({
     'click #cancel': function() {
       Session.set("bookingMovie", null);
+    },
+    'click #book': function() {
+      Seats.update({active: Meteor.userId()}, {$set: {reserved: true}}, {multi: true});
+      alert("Geboekt!");
+      Session.set("bookingMovie", null);
     }
   });
 
@@ -59,30 +65,56 @@ if (Meteor.isClient) {
     return accounting.formatMoney(Template.booking.numTickets() * 9.50 || 0, "€");
   }
 
+  Template.booking.plural = function() {
+    if (Template.booking.numTickets() > 1 || Template.booking.numTickets() == 0)
+      return "s";
+  }
+
+  Template.booking.numFreeSeats = function() {
+    var room = Rooms.findOne({movieId: this.movie._id, time: this.time});
+    console.log(room);
+    if (room)
+      return Seats.find({roomId: room._id, active: false, reserved: false, unavailable: false}).count();
+    return 0;
+  }
+
   Template.seats.seat = function() {
     var room = Rooms.findOne({movieId: this.movie._id, time: this.time});
     if (room) {
       var roomId = room._id;
-      return Seats.find({roomId: roomId});
+      return Seats.find({roomId: roomId}, {sort: {_id: 1}});
     }
   }
 
   Template.seats.status = function() {
     if (this.unavailable) return "unavailable";
-    else if (this.taken) return "taken";
+    else if (this.reserved) return "taken";
+    else if (this.active && this.active === Meteor.userId()) return "mine";
     else if (this.active) return "active";
     else return "available";
   }
 
+  Template.seats.statusText = function() {
+    if (this.unavailable) return "Deze stoel is onbeschikbaar.";
+    else if (this.reserved) return "Deze stoel is al door een andere bezoeker geclaimd.";
+    else if (this.active && this.active === Meteor.userId()) return "Je hebt deze stoel uitgekozen.";
+    else if (this.active) return "Deze stoel is al door een andere bezoeker geclaimd.";
+    else return "Deze stoel is beschikbaar!";
+  }
+
   Template.seats.events({
     'click .seat': function() {
-      if (!this.active && !this.taken && !this.unavailable) {
-        Seats.update({_id: this._id}, {$set: {active: Meteor.userId()}});
-      }
-      else {
-        Seats.update({_id: this._id}, {$set: {active: false}});
+      if (!Meteor.userId()) {
+        alert("Je moet eerst inloggen.");
+        return;
       }
 
+      if (!this.active && !this.reserved && !this.unavailable) {
+        Seats.update({_id: this._id}, {$set: {active: Meteor.userId()}});
+      }
+      else if (this.active == Meteor.userId()) {
+        Seats.update({_id: this._id}, {$set: {active: false}});
+      }
     }
   });
 

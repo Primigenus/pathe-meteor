@@ -81,7 +81,7 @@
       </ul>
     </div>
     <div class="form" id="choose-seats">
-      <h3>Kies je stoel(en) uit</h3>
+      <h3>Kies je stoel(en) uit (nog {{numFreeSeats}} stoelen vrij)</h3>
       <div id="seats-grid">
         {{> seats}}
       </div>
@@ -89,7 +89,7 @@
     <div class="total">
       Totaal: EUR {{price}}
       <br/>
-      {{numTickets}} tickets
+      {{numTickets}} ticket{{plural}}
       <button id="book">Boeken!</button>
       <button id="cancel">Annuleren</button>
     </div>
@@ -99,7 +99,7 @@
 
 <template name="seats">
   {{#each seat}}
-    <div class="seat {{status}}" data-id="{{_id}}"></div>
+    <div class="seat {{status}}" data-id="{{_id}}" title="{{statusText}}"></div>
   {{else}}
     <div class="loading">Loading...</div>
   {{/each}}

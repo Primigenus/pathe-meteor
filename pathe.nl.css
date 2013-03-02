@@ -188,14 +188,16 @@ header {
 }
 
 .seat {
-  cursor: pointer;
   width: 20px; height: 20px;
   float: left;
   background: url(/grid.png) 0 -122px no-repeat;
+  zoom: 1.2;
+  cursor: not-allowed;
 }
 .seat:hover {
   opacity: .8;
 }
+.seat.available, .seat.mine {  cursor: pointer; }
 .seat.mine { background: url(/seat-red.png) top left no-repeat;}
 .seat.active { background: url(/seat-blue.png) top left no-repeat;}
 .seat.taken { background: url(/seat-gray.png) top left no-repeat;}
