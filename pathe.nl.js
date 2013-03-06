@@ -72,7 +72,6 @@ if (Meteor.isClient) {
 
   Template.booking.numFreeSeats = function() {
     var room = Rooms.findOne({movieId: this.movie._id, time: this.time});
-    console.log(room);
     if (room)
       return Seats.find({roomId: room._id, active: false, reserved: false, unavailable: false}).count();
     return 0;
@@ -142,21 +141,24 @@ if (Meteor.isServer) {
 
   Meteor.methods({
     addSeats: function() {
-      var movies = Movies.find().collection.docs;
-      for (var id in movies) {
-        var m = movies[id];
+      Rooms.remove({});
+      Seats.remove({});
+      Movies.find().forEach(insertSeats);
+      function insertSeats(m) {
         for (var i = 0; i < m.showingAt.length; i++) {
           var s = m.showingAt[i];
           for (var j = 0; j < s.times.length; j++) {
             var time = s.times[j].time;
-            var roomId = Rooms.insert({movieId: id, time: time});
-            for (var n = 0; n < 244; n++)
-              Seats.insert({roomId: roomId, reserved: false, active: false, unavailable: false});
+            var roomId = Rooms.insert({movieId: m._id, time: time});
+            for (var n = 0; n < 244; n++) {
+              var reserved = Math.random() < 0.05;
+              Seats.insert({roomId: roomId, reserved: reserved, active: false, unavailable: false});
+            }
           }
         }
       }
     }
-  })
+  });
 
   Meteor.startup(function () {
 
